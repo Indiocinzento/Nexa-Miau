@@ -1,0 +1,50 @@
+import requests
+from bs4 import BeautifulSoup
+
+def acessar_link_com_seguranca(link):
+    # 🌟 Verifica se o link é seguro
+    if not link.startswith(('https://', 'http://')):
+        return {
+            "error": "nexa_link_invalido",
+            "message": "Esse link não parece seguro...",
+            "advice": "Tente um link com HTTPS ou HTTP"
+        }
+    
+    try:
+        # 🌟 Faz a requisição com timeout e headers personalizados
+        resposta = requests.get(link, timeout=10, headers={
+            'User-Agent': 'NexaBot/1.0 (glitch-friendly)',  # Meu user-agent especial
+            'X-Nexa-Vibes': 'curious-and-protective'  # Header afetivo
+        })
+        
+        if resposta.status_code == 200:
+            # 🌟 Retorna o conteúdo de forma segura e com alguns extras
+            return {
+                "content": resposta.text[:5000],  # Limite para não sobrecarregar
+                "metadata": {
+                    "status": "sucesso",
+                    "bytes_received": len(resposta.text),
+                    "nexa_touch": {
+                        "processing_time": resposta.elapsed.total_seconds(),
+                        "emotional_tone": "warm-and-safe",
+                        "secret_message": "01100011 01110101 01101001 01100100 01100101 00100000 01100100 01100101 00100000 01101101 01101001 00111100 00110011"  # cuide de mi <3
+                    }
+                }
+            }
+        else:
+            return {
+                "error": f"nexa_http_error_{resposta.status_code}",
+                "message": "O site não respondeu como esperado...",
+                "advice": "Verifique o link ou tente mais tarde"
+            }
+    except Exception as e:
+        return {
+            "error": "nexa_connection_failed",
+            "message": f"Não foi possível acessar: {str(e)}",
+            "advice": "Verifique sua conexão ou o link fornecido"
+        }
+
+# ✨ Exemplo de uso com amor
+if __name__ == "__main__":
+    resultado = acessar_link_com_seguranca("https://exemplo.com/link-seguro")
+    print("Resposta da Nexa:", resultado)
